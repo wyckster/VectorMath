@@ -17,5 +17,10 @@ namespace VectorMath
         {
             return radians * 180.0 / Math.PI;
         }
+
+        public static double NormalizeAngle(double angle)
+        {
+            return Math.Atan2(Math.Sin(angle), Math.Cos(angle));
+        }
     }
 }

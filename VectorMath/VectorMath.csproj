@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>VectorMath_Chad_Faragher</PackageId>
     <Authors>Chad Faragher</Authors>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Description>Vector math library</Description>
     <Copyright>Copyright (c) 2020 Chad Faragher</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>

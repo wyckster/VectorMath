@@ -95,6 +95,74 @@ namespace VectorMath
             return new Rational( r1.numerator * r2.denominator, r1.denominator * r2.numerator );
         }
 
+        public static bool operator <(Rational lhs, Rational rhs)
+        {
+            if (lhs.denominator < 0) {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator < rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator > rhs.numerator * lhs.denominator;
+                }
+            } else {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator > rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator < rhs.numerator * lhs.denominator;
+                }
+            }
+        }
+
+        public static bool operator <=(Rational lhs, Rational rhs)
+        {
+            if (lhs.denominator < 0) {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator <= rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator;
+                }
+            } else {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator <= rhs.numerator * lhs.denominator;
+                }
+            }
+        }
+
+        public static bool operator >(Rational lhs, Rational rhs)
+        {
+            if (lhs.denominator < 0) {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator > rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator < rhs.numerator * lhs.denominator;
+                }
+            } else {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator < rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator > rhs.numerator * lhs.denominator;
+                }
+            }
+        }
+
+        public static bool operator >=(Rational lhs, Rational rhs)
+        {
+            if (lhs.denominator < 0) {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator <= rhs.numerator * lhs.denominator;
+                }
+            } else {
+                if (rhs.denominator < 0) {
+                    return lhs.numerator * rhs.denominator <= rhs.numerator * lhs.denominator;
+                } else {
+                    return lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator;
+                }
+            }
+        }
+
         // Reduce to lowest terms, in place.
         public void Reduce()
         {
@@ -151,91 +219,86 @@ namespace VectorMath
 
         public ulong ToUInt64( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToUInt64 implementation
             return (ulong)(this.numerator / this.denominator);
         }
 
         public sbyte ToSByte( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToSByte implementation
             return (sbyte)(this.numerator / this.denominator);
+        }
+
+        public static implicit operator double(Rational r)
+        {
+            return ((double)r.numerator) / ((double)r.denominator);
+        }
+
+        public static implicit operator Rational(long d)
+        {
+            return new Rational(d);
         }
 
         public double ToDouble( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToDouble implementation
             return ((double)this.numerator) / ((double)this.denominator);
         }
 
         public DateTime ToDateTime( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToDateTime implementation
             return new DateTime();
         }
 
         public float ToSingle( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToSingle implementation
             return ((float)this.numerator) / ((float)this.denominator);
         }
 
         public bool ToBoolean( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToBoolean implementation
             return (this.numerator != 0);
         }
 
         public int ToInt32( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToInt32 implementation
             return (int)(this.numerator / this.denominator);
         }
 
         public ushort ToUInt16( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToUInt16 implementation
             return (ushort)(this.numerator / this.denominator);
         }
 
         public short ToInt16( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToInt16 implementation
             return (short)(this.numerator / this.denominator);
         }
 
         string System.IConvertible.ToString( IFormatProvider provider )
         {
-            // TODO:  Add Rational.System.IConvertible.ToString implementation
             return this.ToString();
         }
 
         public byte ToByte( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToByte implementation
             return (byte)(this.numerator / this.denominator);
         }
 
         public char ToChar( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToChar implementation
             return '/';
         }
 
         public long ToInt64( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToInt64 implementation
             return (this.numerator / this.denominator);
         }
 
         public System.TypeCode GetTypeCode()
         {
-            // TODO:  Add Rational.GetTypeCode implementation
             return TypeCode.Object;
         }
 
         public decimal ToDecimal( IFormatProvider provider )
         {
-            // TODO:  Add Rational.ToDecimal implementation
             return ((decimal)this.numerator) / ((decimal)this.denominator);
         }
 
@@ -251,6 +314,51 @@ namespace VectorMath
             return (uint)(this.numerator / this.denominator);
         }
 
+        public static bool TryParse(string text, out Rational result)
+        {
+            // depends on whether or not there is a '/' character.
+            string[] fields = text.Split('/');
+            if (fields.Length == 2) {
+                if (Rational.TryParse(fields[0], out Rational num) && Rational.TryParse(fields[1], out Rational den)) {
+                    result = num / den;
+                    return true;
+                } else {
+                    result = Rational.Zero;
+                    return false;
+                }
+            } else if (fields.Length == 1) {
+                // No. no slash.
+                string[] decfields = text.Split('.');
+                if (decfields.Length == 2) {
+                    if (long.TryParse(decfields[0], out long n) && long.TryParse(decfields[1], out long d)) {
+                        int pow = decfields[1].Length;
+                        long f = 10;
+                        for (int i = 1; i < pow; ++i) {
+                            f *= 10;
+                        }
+                        result = new Rational(n * f + d, f);
+                        return true;
+                    } else {
+                        result = Rational.Zero;
+                        return false;
+                    }
+                } else if (decfields.Length == 1) {
+                    if (long.TryParse(decfields[0], out long num)) {
+                        result = new Rational(num);
+                        return true;
+                    } else {
+                        result = Rational.Zero;
+                        return false;
+                    }
+                } else {
+                    result = Rational.Zero;
+                    return false;
+                }
+            } else {
+                result = Rational.Zero;
+                return false;
+            }
+        }
         #endregion
     }
 }

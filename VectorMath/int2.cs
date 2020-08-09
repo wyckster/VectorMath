@@ -25,6 +25,29 @@ namespace VectorMath
         public static readonly int2 Zero = new int2( 0, 0 );
         public static readonly int2 One = new int2( 1, 1 );
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (!(obj is int2)) return false;
+            int2 other = (int2)obj;
+            return x == other.x && y == other.y;
+        }
+
+        public override int GetHashCode()
+        {
+            return x ^ y;
+        }
+
+        public static bool operator !=(int2 A, int2 B)
+        {
+            return A.x != B.x || A.y != B.y;
+        }
+
+        public static bool operator ==(int2 A, int2 B)
+        {
+            return A.x == B.x && A.y == B.y;
+        }
+
         // Addition
         public static int2 operator +( int2 A, int2 B )
         {
@@ -95,6 +118,11 @@ namespace VectorMath
         public override string ToString()
         {
             return string.Format( "{0}{1}, {2}{3}", '{', x, y, '}' );
+        }
+
+        public static bool AreEqual(int2 a, int2 b)
+        {
+            return a.x == b.x && a.y == b.y;
         }
     }
 }
